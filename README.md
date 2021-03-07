@@ -32,7 +32,7 @@ $ mint install salishseasoftware/obfuscate
 
 Clone the repo then:
 
-```
+```sh
 $ make install
 ```
 
@@ -131,7 +131,7 @@ OPTIONS:
 
 The Obfuscator library provides just two functions:
 
-### ****encrypt
+### encrypt
 
 `encrypt(_:)`
 
@@ -171,7 +171,7 @@ The original string.
 
 Add the package as a dependency in your Package.swift file
 
-```
+```swift
 let package = Package(
     // name, platforms, products, etc.
     dependencies: [
