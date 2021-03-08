@@ -6,30 +6,30 @@ final class ObfuscatorTests: XCTestCase {
     let sekret = "super duper top sekret 💩!"
 
     func testEncrypt() throws {
-        let (cipher, key) = try Obfuscator.encrypt(sekret)
-        XCTAssertFalse(cipher.isEmpty)
+        let (token, key) = try Obfuscator.encrypt(sekret)
+        XCTAssertFalse(token.isEmpty)
         XCTAssertFalse(key.isEmpty)
-        XCTAssertNotEqual(cipher, key)
+        XCTAssertNotEqual(token, key)
         XCTAssertNotEqual(sekret, key)
     }
 
     func testDecrypt() throws {
-        let (cipher, key) = try Obfuscator.encrypt(sekret)
-        let decrypted = try Obfuscator.decrypt(cipher: cipher, key: key)
+        let (token, key) = try Obfuscator.encrypt(sekret)
+        let decrypted = try Obfuscator.decrypt(token: token, key: key)
         XCTAssertNotNil(decrypted)
         XCTAssertEqual(sekret, decrypted)
     }
 
     func testDecryptInvalidKey() throws {
-        let (cipher, _) = try Obfuscator.encrypt(sekret)
-        XCTAssertThrowsError(try Obfuscator.decrypt(cipher: cipher, key: "INVALID")) { (errorThrown) in
+        let (token, _) = try Obfuscator.encrypt(sekret)
+        XCTAssertThrowsError(try Obfuscator.decrypt(token: token, key: "INVALID")) { (errorThrown) in
             XCTAssertEqual(errorThrown as? Obfuscator.ObfuscatorError, Obfuscator.ObfuscatorError.decryptionFailure)
         }
     }
 
     func testDecryptInvalidSalt() throws {
         let (_, key) = try Obfuscator.encrypt(sekret)
-        XCTAssertThrowsError(try Obfuscator.decrypt(cipher: "INVALID", key: key)) { (errorThrown) in
+        XCTAssertThrowsError(try Obfuscator.decrypt(token: "INVALID", key: key)) { (errorThrown) in
             XCTAssertEqual(errorThrown as? Obfuscator.ObfuscatorError, Obfuscator.ObfuscatorError.decryptionFailure)
         }
     }

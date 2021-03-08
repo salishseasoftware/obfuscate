@@ -10,9 +10,9 @@ public class Obfuscator {
     /// Encrypt a string
     /// - Parameter secret: The secret you want to encrypt
     /// - Throws: A ObfuscatorError.encryptionFailure if the encryption fails.
-    /// - Returns: A tuple consisting of the encrypted string (cipher) and a
+    /// - Returns: A tuple consisting of the encrypted string (token) and a
     ///     randomly generated salt (key) used to perform the encryption.
-    public static func encrypt(_ secret: String) throws -> (cipher: String, key: String) {
+    public static func encrypt(_ secret: String) throws -> (token: String, key: String) {
         let key = randomString(length: secret.lengthOfBytes(using: .utf8))
         let salt = [UInt8](key.utf8)
         let bytes = [UInt8](secret.utf8)
@@ -20,28 +20,28 @@ public class Obfuscator {
         // make sure salt and secret are the same length
         guard bytes.count == salt.count else { throw ObfuscatorError.encryptionFailure }
 
-        let encrypted = zip(bytes, salt)
+        let cipher = zip(bytes, salt)
             .map { $0 ^ $1 }
             .map { String(describing: $0) }
             .joined(separator: delimiter)
             .data(using: .utf8)?
             .base64EncodedString()
 
-        guard let cipher = encrypted else { throw ObfuscatorError.encryptionFailure }
+        guard let token = cipher else { throw ObfuscatorError.encryptionFailure }
 
-        return (cipher, key)
+        return (token, key)
     }
 
 
     /// Reveals the original value of an encrypted string
     /// - Parameters:
-    ///   - cipher: The encrytped string.
+    ///   - token: The encrytped string.
     ///   - key: The key (A.K.A. salt) used to encrypt the orignal.
     /// - Throws: An ObfuscatorError.decryptionFailure if the decryption fails.
     /// - Returns: The original value.
-    public static func decrypt(cipher: String, key: String) throws -> String {
+    public static func decrypt(token: String, key: String) throws -> String {
         guard
-            let data = Data.init(base64Encoded: cipher),
+            let data = Data.init(base64Encoded: token),
             let byteString = String.init(bytes: data, encoding: .utf8)
         else {
             throw ObfuscatorError.decryptionFailure

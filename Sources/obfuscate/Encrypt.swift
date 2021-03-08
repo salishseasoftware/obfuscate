@@ -7,7 +7,7 @@ extension Obfuscate {
         static var configuration = CommandConfiguration(
             abstract: "Obfuscates a string.",
             discussion: """
-            Generates a cipher from the provided string, along with a key that can be used to decrypt the cipher,
+            Generates a token from the provided string, along with a key that can be used to decrypt the token,
             and reveal the original value.
             """
         )
@@ -16,8 +16,8 @@ extension Obfuscate {
 
         mutating func run() {
             do {
-                let (cipher, key) = try Obfuscator.encrypt(string)
-                print("cipher: \(cipher)")
+                let (token, key) = try Obfuscator.encrypt(string)
+                print("token: \(token)")
                 print("key: \(key)")
             } catch {
                 Self.exit(withError: error)

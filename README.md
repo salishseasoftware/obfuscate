@@ -13,7 +13,7 @@ Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and the
 
 This package contains both a library and command line tool.
 
-Use the `obfuscate` command line tool to encrypt your secret token. It generates both a cipher and a key (A.K.A. salt) you can use to reveal the original value.
+Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key (A.K.A. salt) you can use to reveal the original value.
 
 Include the library in your application to decode the value at runtime.
 
@@ -72,7 +72,7 @@ the original value using the obfuscates string and the salt.
 You can include the obfuscated string in your applications source code and provide the key
 through some type of configuration method (ENV, XCConfig file, etc).
 
-Then use the `Obfuscator` library to decrypt the cipher at runtime when needed.
+Then use the `Obfuscator` library to decrypt the token at runtime when needed.
 
 The important bit is that your original secret should not be present in your source code,
 config files, or your SCM system.
@@ -100,8 +100,8 @@ SUBCOMMANDS:
 ```
 OVERVIEW: Obfuscates a string.
 
-Generates a cipher from the provided string, along with a key that can 
-be used to decrypt the cipher, and reveal the original value.
+Generates a token from the provided string, along with a key that can 
+be used to decrypt the token, and reveal the original value.
 
 USAGE: obfuscate encrypt <string>
 
@@ -117,12 +117,12 @@ OPTIONS:
 ```
 OVERVIEW: Reveals an obfuscated string.
 
-Decrypts the provided cipher using the key to reveal the original value.
+Decrypts the provided token using the key to reveal the original value.
 
-USAGE: obfuscate decrypt --cipher <cipher> --key <key>
+USAGE: obfuscate decrypt --token <token> --key <key>
 
 OPTIONS:
-  -c, --cipher <cipher>   The obfuscated string 
+  -t, --token <token>   The obfuscated string 
   -k, --key <key>         Secret key 
   -h, --help              Show help information.
 ```
@@ -146,17 +146,17 @@ An error or type `ObfuscatorError.encryptionFailure` if the encryption fails.
 
 __Returns__
 
-A `(String, String)` tuple consisting of the obfuscated string (cipher) and a randomly generated salt (key) used to perform the encryption.
+A `(String, String)` tuple consisting of the obfuscated string (token) and a randomly generated salt (key) used to perform the encryption.
 
 ### decrypt
 
-`decrypt(cipher:,key:)`
+`decrypt(token:,key:)`
 
  Reveals the original value of an encrypted string.
 
 __Parameters__
 
-- `cipher:` The encrypted string.
+- `token:` The encrypted string.
 - `key:` The salt used to encrypt the string.
 
 __Throws__
@@ -186,7 +186,4 @@ let package = Package(
     ]
 )
 ```
-
-
-
 
