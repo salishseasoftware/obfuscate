@@ -16,13 +16,13 @@ final class obfuscatorTests: XCTestCase {
         let result = encrypt(args: ["encrypt", sekret])
 
         switch result {
-        case .success(let (cipher, key)):
-            XCTAssertFalse(cipher.isEmpty)
+        case .success(let (token, key)):
+            XCTAssertFalse(token.isEmpty)
             XCTAssertFalse(key.isEmpty)
 
-            XCTAssertNotEqual(cipher, key)
+            XCTAssertNotEqual(token, key)
 
-            XCTAssertNotEqual(sekret, cipher)
+            XCTAssertNotEqual(sekret, token)
             XCTAssertNotEqual(sekret, key)
 
         case .failure(let error):
@@ -30,30 +30,13 @@ final class obfuscatorTests: XCTestCase {
         }
     }
 
-    /*
-    func testEncyptSeparator() {
-        let separatorArg = option(name: "separator", value: "-")
-        let result = encrypt(args: ["encrypt", separatorArg, sekret])
-
-        switch result {
-        case .success(let (cipher, _)):
-            let components = cipher.components(separatedBy: "-")
-            XCTAssertFalse(components.isEmpty)
-            XCTAssertEqual(sekret.lengthOfBytes(using: .utf8), components.count)
-
-        case .failure(let error):
-            XCTFail(error.localizedDescription)
-        }
-    }
-    */
-
     func testDecrypt() throws {
         let encryptResult = encrypt(args: ["encrypt", sekret])
 
         switch encryptResult {
-        case .success(let (cipher, key)):
+        case .success(let (token, key)):
 
-            let decryptResult = decrypt(args: ["decrypt"], cipher: cipher, key: key)
+            let decryptResult = decrypt(args: ["decrypt"], token: token, key: key)
 
             switch decryptResult {
             case .success(let decrypted):
@@ -72,9 +55,9 @@ final class obfuscatorTests: XCTestCase {
         let encryptResult = encrypt(args: ["encrypt", sekret])
 
         switch encryptResult {
-        case .success(let (cipher, _)):
+        case .success(let (token, _)):
 
-            let decryptResult = decrypt(args: ["decrypt"], cipher: cipher, key: "Invalid Key")
+            let decryptResult = decrypt(args: ["decrypt"], token: token, key: "Invalid Key")
 
             switch decryptResult {
             case .success(let decrypted):
@@ -89,42 +72,6 @@ final class obfuscatorTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
     }
-
-    /*
-    func testDecryptSeparator() throws {
-        let separatorArg = option(name: "separator", value: "-")
-        let encryptResult = encrypt(args: ["encrypt", separatorArg, sekret])
-
-        switch encryptResult {
-        case .success(let (cipher, key)):
-
-            // Decrypt using custom separator
-            
-            let decryptResultWithSeparator = decrypt(args: ["decrypt", separatorArg], cipher: cipher, key: key)
-
-            switch decryptResultWithSeparator {
-            case .success(let decrypted):
-                XCTAssertEqual(sekret, decrypted)
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-
-            // Decrypt without using custom separator
-
-            let decryptResultWithoutSeparator = decrypt(args: ["decrypt"], cipher: cipher, key: key)
-
-            switch decryptResultWithoutSeparator {
-            case .success:
-                XCTFail("Expected decrypt to fail")
-            case .failure(let error):
-                XCTAssertEqual("Error: decryptionFailure", error.localizedDescription)
-            }
-
-        case .failure(let error):
-            XCTFail(error.localizedDescription)
-        }
-    }
-    */
 
     private func runProcess(args: [String]) -> Result<String, Error> {
         let bin = productsDirectory.appendingPathComponent("obfuscate")
@@ -162,19 +109,19 @@ final class obfuscatorTests: XCTestCase {
         }
     }
 
-    private func encrypt(args: [String]) -> Result<(cipher: String, key: String), Error> {
+    private func encrypt(args: [String]) -> Result<(token: String, key: String), Error> {
         let result = runProcess(args: args)
 
         switch result {
         case .success(let output):
             let lines = output.components(separatedBy: .newlines)
 
-            let cipherPrefix = "cipher:"
-            guard let cipher = lines.first(where: { $0.hasPrefix(cipherPrefix) })?
-                .deletingPrefix(cipherPrefix)
+            let tokenPrefix = "token:"
+            guard let token = lines.first(where: { $0.hasPrefix(tokenPrefix) })?
+                .deletingPrefix(tokenPrefix)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             else {
-                return .failure("Could not find 'cipher' in result")
+                return .failure("Could not find 'token' in result")
             }
 
             let keyPrefix = "key:"
@@ -185,16 +132,16 @@ final class obfuscatorTests: XCTestCase {
                 return .failure("Could not find 'key' in result")
             }
 
-            return .success((cipher, key))
+            return .success((token, key))
 
         case .failure(let error):
             return .failure(error)
         }
     }
 
-    private func decrypt(args: [String], cipher: String, key: String) -> Result<String, Error> {
+    private func decrypt(args: [String], token: String, key: String) -> Result<String, Error> {
         var allArgs = args
-        allArgs.append(option(name: "cipher", value: cipher))
+        allArgs.append(option(name: "token", value: token))
         allArgs.append(option(name: "key", value: key))
 
         let result = runProcess(args: allArgs)
@@ -237,8 +184,6 @@ final class obfuscatorTests: XCTestCase {
         ("testEncrypt", testEncrypt),
         ("testDecrypt", testDecrypt),
         ("testDecryptInvalidKey", testDecryptInvalidKey),
-//        ("testEncyptSeparator", testEncyptSeparator),
-//        ("testDecryptSeparator", testDecryptSeparator)
     ]
 }
 
