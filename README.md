@@ -1,3 +1,10 @@
+[![Swift](https://github.com/salishseasoftware/obfuscate/actions/workflows/test.yml/badge.svg)](https://github.com/salishseasoftware/obfuscate/actions/workflows/test.yml)
+[![Latest Release](https://img.shields.io/github/release/salishseasoftware/obfuscate/all.svg)](https://github.com/salishseasoftware/obfuscate/releases)
+[![Swift 5.5+](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://developer.apple.com/swift)
+[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
+[![License](https://img.shields.io/github/license/salishseasoftware/obfuscate)](LICENSE)
+
+
 # Obfuscate
 
 [Security through obscurity](https://en.wikipedia.org/wiki/Security_through_obscurity) for iOS apps.
