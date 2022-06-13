@@ -1,7 +1,7 @@
 import XCTest
 
-import obsfucatinatorTests
+import ObfuscaterTests
 
 var tests = [XCTestCaseEntry]()
-tests += obsfucatinatorTests.allTests()
+tests += ObfuscaterTests.allTests()
 XCTMain(tests)

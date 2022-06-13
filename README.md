@@ -72,7 +72,7 @@ the original value using the obfuscates string and the salt.
 You can include the obfuscated string in your applications source code and provide the key
 through some type of configuration method (ENV, XCConfig file, etc).
 
-Then use the `Obfuscator` library to decrypt the token at runtime when needed.
+Then use the `Obfuscater` library to decrypt the token at runtime when needed.
 
 The important bit is that your original secret should not be present in your source code,
 config files, or your SCM system.
@@ -142,7 +142,7 @@ __Parameters__
 - secret: The secret you want to encrypt.	
 __Throws__
 
-An error or type `ObfuscatorError.encryptionFailure` if the encryption fails.
+An error or type `ObfuscaterError.encryptionFailure` if the encryption fails.
 
 __Returns__
 
@@ -161,7 +161,7 @@ __Parameters__
 
 __Throws__
 
-An error or type `ObfuscatorError.decryptionFailure` if the decryption fails.
+An error or type `ObfuscaterError.decryptionFailure` if the decryption fails.
 
 __Returns__
 
@@ -180,7 +180,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "<a-target>", dependencies: [
-            .product(name: "Obfuscator", package: "obfuscate"),
+            .product(name: "Obfuscater", package: "obfuscate"),
         ]),
         // other targets
     ]

@@ -1,15 +1,15 @@
 import Foundation
 
-public class Obfuscator {
+public class Obfuscater {
 
-    public enum ObfuscatorError: Error, LocalizedError {
+    public enum ObfuscaterError: Error, LocalizedError {
         case encryptionFailure
         case decryptionFailure
     }
 
     /// Encrypt a string
     /// - Parameter secret: The secret you want to encrypt
-    /// - Throws: A ObfuscatorError.encryptionFailure if the encryption fails.
+    /// - Throws: A ``ObfuscaterError.encryptionFailure`` if the encryption fails.
     /// - Returns: A tuple consisting of the encrypted string (token) and a
     ///     randomly generated salt (key) used to perform the encryption.
     public static func encrypt(_ secret: String) throws -> (token: String, key: String) {
@@ -18,7 +18,7 @@ public class Obfuscator {
         let bytes = [UInt8](secret.utf8)
 
         // make sure salt and secret are the same length
-        guard bytes.count == salt.count else { throw ObfuscatorError.encryptionFailure }
+        guard bytes.count == salt.count else { throw ObfuscaterError.encryptionFailure }
 
         let cipher = zip(bytes, salt)
             .map { $0 ^ $1 }
@@ -27,7 +27,7 @@ public class Obfuscator {
             .data(using: .utf8)?
             .base64EncodedString()
 
-        guard let token = cipher else { throw ObfuscatorError.encryptionFailure }
+        guard let token = cipher else { throw ObfuscaterError.encryptionFailure }
 
         return (token, key)
     }
@@ -35,27 +35,27 @@ public class Obfuscator {
 
     /// Reveals the original value of an encrypted string
     /// - Parameters:
-    ///   - token: The encrytped string.
+    ///   - token: The encrypted string.
     ///   - key: The key (A.K.A. salt) used to encrypt the orignal.
-    /// - Throws: An ObfuscatorError.decryptionFailure if the decryption fails.
+    /// - Throws: An ``ObfuscaterError.decryptionFailure`` if the decryption fails.
     /// - Returns: The original value.
     public static func decrypt(token: String, key: String) throws -> String {
         guard
             let data = Data.init(base64Encoded: token),
             let byteString = String.init(bytes: data, encoding: .utf8)
         else {
-            throw ObfuscatorError.decryptionFailure
+            throw ObfuscaterError.decryptionFailure
         }
 
         let salt = [UInt8](key.utf8)
         let bytes = byteString.components(separatedBy: delimiter).compactMap { UInt8($0) }
 
         // make sure salt and byte array are the same length
-        guard salt.count == bytes.count else { throw ObfuscatorError.decryptionFailure }
+        guard salt.count == bytes.count else { throw ObfuscaterError.decryptionFailure }
 
         let decrypted = zip(salt, bytes).map { $0 ^ $1 }
 
-        guard let value = String(bytes: decrypted, encoding: .utf8) else { throw ObfuscatorError.decryptionFailure }
+        guard let value = String(bytes: decrypted, encoding: .utf8) else { throw ObfuscaterError.decryptionFailure }
 
         return value
     }

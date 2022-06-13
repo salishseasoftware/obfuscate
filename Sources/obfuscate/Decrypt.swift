@@ -1,6 +1,6 @@
 import Foundation
 import ArgumentParser
-import Obfuscator
+import Obfuscater
 
 extension Obfuscate {
     struct Decrypt: ParsableCommand {
@@ -17,7 +17,7 @@ extension Obfuscate {
 
         mutating func run() {
             do {
-                let result = try Obfuscator.decrypt(token: token, key: key)
+                let result = try Obfuscater.decrypt(token: token, key: key)
                 print(result)
             } catch {
                 Self.exit(withError: error)
