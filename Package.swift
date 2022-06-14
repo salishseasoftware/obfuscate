@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
@@ -9,13 +9,12 @@ let package = Package(
         .executable(name: "obfuscate", targets: ["obfuscate"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
     ],
     targets: [
         .target(name: "Obfuscater", dependencies: []),
         .testTarget(name: "ObfuscaterTests", dependencies: ["Obfuscater"]),
-        .target(
+        .executableTarget(
             name: "obfuscate",
             dependencies: [
                 "Obfuscater",

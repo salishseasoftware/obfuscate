@@ -20,10 +20,15 @@ Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and the
 
 This package contains both a library and command line tool.
 
-Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key (A.K.A. salt) you can use to reveal the original value.
+Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key you can use to reveal the original value.
 
 Include the library in your application to decode the value at runtime.
 
+## Requirements
+
+- Swift 5.5+
+- Xcode 13.0+
+- macOS 11.0+
 
 ## obfuscate - command line tool
 
@@ -177,20 +182,4 @@ The original string.
 ### Installation
 
 Add the package as a dependency in your Package.swift file
-
-```swift
-let package = Package(
-    // name, platforms, products, etc.
-    dependencies: [
-        .package(url: "https://github.com/salishseasoftware/obfuscate", from: "0.1.0"),
-        // other dependencies
-    ],
-    targets: [
-        .target(name: "<a-target>", dependencies: [
-            .product(name: "Obfuscater", package: "obfuscate"),
-        ]),
-        // other targets
-    ]
-)
-```
 
