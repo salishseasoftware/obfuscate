@@ -1,22 +1,32 @@
+[![Swift](https://github.com/salishseasoftware/obfuscate/actions/workflows/test.yml/badge.svg)](https://github.com/salishseasoftware/obfuscate/actions/workflows/test.yml)
+[![Latest Release](https://img.shields.io/github/release/salishseasoftware/obfuscate/all.svg)](https://github.com/salishseasoftware/obfuscate/releases)
+[![Swift 5.5+](https://img.shields.io/badge/Swift-5.5+-orange.svg)](https://developer.apple.com/swift)
+[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
+[![License](https://img.shields.io/github/license/salishseasoftware/obfuscate)](LICENSE)
+
+
 # Obfuscate
 
 [Security through obscurity](https://en.wikipedia.org/wiki/Security_through_obscurity) for iOS apps.
 
-Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and these articles:
+This package contains both a library and command line tool.
 
+Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key you can use to reveal the original value.
+
+Include the library in your application to decode the value at runtime.
+
+Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and these articles:
 
 * [Secret Management on iOS - NSHipster](https://nshipster.com/secrets/)
 * [Managing secrets within an iOS app | Lord Codes](https://www.lordcodes.com/articles/managing-secrets-within-an-ios-app)
 * [Secure Secrets in iOS app. How do we store our secrets on the… | by Shahrukh Alam | Swift India | Medium](https://medium.com/swift-india/secure-secrets-in-ios-app-9f66085800b4)
 * [Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience - IEEE Conference Publication](https://ieeexplore.ieee.org/abstract/document/8449256)
 
+## Requirements
 
-This package contains both a library and command line tool.
-
-Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key (A.K.A. salt) you can use to reveal the original value.
-
-Include the library in your application to decode the value at runtime.
-
+- Swift 5.5+
+- Xcode 13.0+
+- macOS 11.0+
 
 ## obfuscate - command line tool
 
@@ -72,7 +82,7 @@ the original value using the obfuscates string and the salt.
 You can include the obfuscated string in your applications source code and provide the key
 through some type of configuration method (ENV, XCConfig file, etc).
 
-Then use the `Obfuscator` library to decrypt the token at runtime when needed.
+Then use the `Obfuscater` library to decrypt the token at runtime when needed.
 
 The important bit is that your original secret should not be present in your source code,
 config files, or your SCM system.
@@ -142,7 +152,7 @@ __Parameters__
 - secret: The secret you want to encrypt.	
 __Throws__
 
-An error or type `ObfuscatorError.encryptionFailure` if the encryption fails.
+An error or type `ObfuscaterError.encryptionFailure` if the encryption fails.
 
 __Returns__
 
@@ -161,7 +171,7 @@ __Parameters__
 
 __Throws__
 
-An error or type `ObfuscatorError.decryptionFailure` if the decryption fails.
+An error or type `ObfuscaterError.decryptionFailure` if the decryption fails.
 
 __Returns__
 
@@ -170,20 +180,4 @@ The original string.
 ### Installation
 
 Add the package as a dependency in your Package.swift file
-
-```swift
-let package = Package(
-    // name, platforms, products, etc.
-    dependencies: [
-        .package(url: "https://github.com/salishseasoftware/obfuscate", from: "0.1.0"),
-        // other dependencies
-    ],
-    targets: [
-        .target(name: "<a-target>", dependencies: [
-            .product(name: "Obfuscator", package: "obfuscate"),
-        ]),
-        // other targets
-    ]
-)
-```
 
