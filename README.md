@@ -9,20 +9,18 @@
 
 [Security through obscurity](https://en.wikipedia.org/wiki/Security_through_obscurity) for iOS apps.
 
-Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and these articles:
-
-
-* [Secret Management on iOS - NSHipster](https://nshipster.com/secrets/)
-* [Managing secrets within an iOS app | Lord Codes](https://www.lordcodes.com/articles/managing-secrets-within-an-ios-app)
-* [Secure Secrets in iOS app. How do we store our secrets on the… | by Shahrukh Alam | Swift India | Medium](https://medium.com/swift-india/secure-secrets-in-ios-app-9f66085800b4)
-* [Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience - IEEE Conference Publication](https://ieeexplore.ieee.org/abstract/document/8449256)
-
-
 This package contains both a library and command line tool.
 
 Use the `obfuscate` command line tool to encrypt your secret token. It generates both a token and a key you can use to reveal the original value.
 
 Include the library in your application to decode the value at runtime.
+
+Inspired by [twenty3/Obfuscator](https://github.com/twenty3/Obfuscator), and these articles:
+
+* [Secret Management on iOS - NSHipster](https://nshipster.com/secrets/)
+* [Managing secrets within an iOS app | Lord Codes](https://www.lordcodes.com/articles/managing-secrets-within-an-ios-app)
+* [Secure Secrets in iOS app. How do we store our secrets on the… | by Shahrukh Alam | Swift India | Medium](https://medium.com/swift-india/secure-secrets-in-ios-app-9f66085800b4)
+* [Protecting Million-User iOS Apps with Obfuscation: Motivations, Pitfalls, and Experience - IEEE Conference Publication](https://ieeexplore.ieee.org/abstract/document/8449256)
 
 ## Requirements
 
